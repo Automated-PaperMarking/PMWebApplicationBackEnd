@@ -1,0 +1,22 @@
+-- 1. Create books table if not exists
+CREATE TABLE IF NOT EXISTS books (
+  name TEXT PRIMARY KEY,
+  author TEXT NOT NULL,
+  description TEXT,
+  price DECIMAL(10,2)
+);
+CREATE OR REPLACE FUNCTION insert_book(
+    book_name TEXT,
+    book_author TEXT,
+    book_description TEXT,
+    book_price NUMERIC
+) RETURNS TABLE(name TEXT, author TEXT, description TEXT, price NUMERIC) 
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    RETURN QUERY
+    INSERT INTO books (name, author, description, price)
+    VALUES (book_name, book_author, book_description, book_price)
+    RETURNING  books.name, books.author, books.description, books.price;  -- Explicitly refer to the 'books' table columns
+END;
+$$;
