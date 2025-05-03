@@ -2,8 +2,18 @@ import express from 'express';
 import supabase from './supabaseClient.js';
 import uploadRoute from './routes/upload.route.js';
 import { errorHandler } from './middlewares/error.middleware.js';
+import { Server } from 'socket.io';
+import { createServer  } from 'http';
 
 const app = express();
+
+const httpServer = createServer(app);   // Create an HTTP server using the Express app
+const io = new Server(httpServer, {
+    cors: {
+        origin: '*',
+        methods: ['GET', 'POST'],
+    },
+});     // Initialize Socket.IO with the HTTP server
 
 app.use(express.json());
 

@@ -17,5 +17,8 @@ export const excelFileValidator = (req, res, next) => {
     return res.status(400).json({ error: "Invalid file type. Please upload an Excel file." });
   }
 
+  // Add documentId to request for socket notification
+  req.documentId = req.body.documentId || 'default';+
+  
   next();
 };
