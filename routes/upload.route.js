@@ -12,4 +12,10 @@ router.post(
   uploadExcel
 );
 
+router.post(
+  '/upload-studentXCL',
+  fileUpload(uploadOptions),
+  excelFileValidator,
+  uploadExcel
+);
 export default router;
