@@ -33,7 +33,7 @@ export const processExcelUpload = async (excelFile) => {
   
           // Set batch if not present or invalid
           if (!batch || isNaN(parseInt(batch))) {
-            batch = (year + 2).toString(); // e.g., 20 -> 22
+            batch = year + 2; // e.g., 20 -> 22
           }
   
           // Set default userName if not provided

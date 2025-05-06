@@ -9,10 +9,10 @@ export const insertStudent = async (studentData) => {
     //  salt round of 10, which is secure and commonly used
 
     const { data, error } = await supabase.rpc('insert_student', {
-      student_regNo: studentData.regNo,
-      student_name: studentData.Name,
+      student_regno: studentData.regNo,
+      student_name: studentData.name,
       student_batch: studentData.batch,
-      student_userName: studentData.userName,
+      student_username: studentData.userName,
       student_password: hashedPassword,
     });
 
