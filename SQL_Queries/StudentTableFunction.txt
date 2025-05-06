@@ -1,0 +1,31 @@
+CREATE TABLE IF NOT Exists Student (
+    RegNo VARCHAR(20) PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    Batch VARCHAR(20),
+    UserName VARCHAR(50) UNIQUE NOT NULL,
+    Password VARCHAR(255) NOT NULL
+);
+
+CREATE OR REPLACE FUNCTION insert_student(
+    student_regno TEXT,
+    student_name TEXT,
+    student_batch NUMERIC,
+    student_username TEXT,
+    student_password TEXT
+)
+RETURNS TABLE(
+    regno VARCHAR(20),
+    name VARCHAR(100),
+    username VARCHAR(50),
+    password VARCHAR(255),
+    batch VARCHAR(20)
+    ) 
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    RETURN QUERY
+    INSERT INTO Student (RegNo, Name, Batch, UserName, Password)
+    VALUES (student_regno, student_name, student_batch, student_username, student_password)
+    RETURNING  Student.RegNo, Student.Name, Student.Batch, Student.UserName, Student.Password;
+END;
+$$;
