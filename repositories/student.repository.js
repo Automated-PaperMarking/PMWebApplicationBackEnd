@@ -4,7 +4,6 @@ import bcrypt from 'bcryptjs';
 const studentRepository = {
   insertStudent : async (studentData) => {
     try {
-  
       // Password Hashing
       const hashedPassword = await bcrypt.hash(studentData.password, 10);
       //  salt round of 10, which is secure and commonly used
@@ -24,6 +23,18 @@ const studentRepository = {
       throw error;
     }
   },
+  exportStudent : async ()=> {
+    try{
+      const { data, error } = await supabase
+        .from('student')
+        .select('regno, name, batch, username');
+      if (error) throw error;
+      return data;
+    }catch(error){
+      console.error('Repository Error:', error);
+      throw error;
+    }
+  }
 };
 
 export {studentRepository};
