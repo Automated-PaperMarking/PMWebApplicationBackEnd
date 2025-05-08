@@ -1,4 +1,4 @@
-import { insertStudent } from '../repositories/student.repository.js';
+import { studentRepository } from '../repositories/student.repository.js';
 import XLSX from 'xlsx';
 import fs from 'fs';
 
@@ -55,7 +55,7 @@ export const processExcelUpload = async (excelFile) => {
           password: password,
         };
   
-        const inserted = await insertStudent(studentData);
+        const inserted = await studentRepository.insertStudent(studentData);
         results.successData.push(inserted);
         results.stats.success++;
     } catch (error) {
