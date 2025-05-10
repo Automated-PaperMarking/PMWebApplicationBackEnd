@@ -12,6 +12,17 @@ const studentController = {
             res.status(500).json({ error: 'Internal Server Error' });
         }
     },
+    exportStudentPDF: async (req, res) => {
+        try {
+            const pdfData = await studentService.exportStudentPDF();
+            res.setHeader('Content-Type', 'application/pdf');
+            res.setHeader('Content-Disposition', 'attachment; filename=students.pdf');
+            res.status(200).send(pdfData);
+        } catch (error) {
+            console.error('PDF Controller Error:', error);
+            res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
 };
 
 export { studentController };
