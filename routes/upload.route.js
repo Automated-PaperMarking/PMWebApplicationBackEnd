@@ -20,5 +20,5 @@ router.post(
 );
 
 router.get('/students/export', studentController.exportStudent);
-
+router.get('/students/exportPDF', studentController.exportStudentPDF);
 export default router;
