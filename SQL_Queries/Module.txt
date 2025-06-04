@@ -1,0 +1,45 @@
+CREATE TABLE IF NOT EXISTS Module (
+    ModuleId VARCHAR(20) PRIMARY KEY,
+    ModuleCode VARCHAR(20) NOT NULL,
+    ModuleName VARCHAR(100) NOT NULL,
+    Year NUMERIC NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Lecturer (
+    LecturerID SERIAL PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    Email VARCHAR(100) UNIQUE NOT NULL,
+    UserName VARCHAR(50) UNIQUE NOT NULL,
+    Password VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS ModuleLecturer (
+    ModuleId VARCHAR(20),
+    LecturerID INTEGER,
+    PRIMARY KEY (ModuleId, LecturerID),
+    FOREIGN KEY (ModuleId) REFERENCES Module(ModuleId) ON DELETE CASCADE,
+    FOREIGN KEY (LecturerID) REFERENCES Lecturer(LecturerID) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS Assignment (
+    AssignmentId SERIAL PRIMARY KEY,
+    ModuleId VARCHAR(20) NOT NULL,
+    Title VARCHAR(200) NOT NULL,
+    Description TEXT,
+    RelevantData TEXT,
+    DocumentPath VARCHAR(255),
+    Deadline TIMESTAMP NOT NULL,
+    FOREIGN KEY (ModuleId) REFERENCES Module(ModuleId) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS Submission (
+    SubmissionId SERIAL PRIMARY KEY,
+    RegNo VARCHAR(20) NOT NULL,
+    AssignmentId INT NOT NULL,
+    SubmitTime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FilePath VARCHAR(255) NOT NULL,
+    Remarks TEXT,
+    UNIQUE (RegNo, AssignmentId),
+    FOREIGN KEY (RegNo) REFERENCES Student(RegNo) ON DELETE CASCADE,
+    FOREIGN KEY (AssignmentId) REFERENCES Assignment(AssignmentId) ON DELETE CASCADE
+);
