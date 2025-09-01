@@ -1,0 +1,35 @@
+DROP TABLE IF EXISTS "Users";
+
+CREATE TABLE IF NOT Exists "User" (
+    UserID SERIAL PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    Role VARCHAR(25) NOT NULL,
+    UserName VARCHAR(50) UNIQUE NOT NULL,
+    Password VARCHAR(255) NOT NULL,
+    Email VARCHAR(255) NOT NULL
+);
+
+CREATE OR REPLACE FUNCTION insert_user(
+    user_name TEXT,
+    user_role TEXT,
+    user_username TEXT,
+    user_password TEXT,
+    user_email TEXT
+)
+RETURNS TABLE(
+    userid INT,
+    name VARCHAR(100),
+    role VARCHAR(25),
+    username VARCHAR(50),
+    password VARCHAR(255),
+    email VARCHAR(255)
+    ) 
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    RETURN QUERY
+    INSERT INTO Student (Name, Role, UserName, Password, Email)
+    VALUES (user_name, user_role, user_username, user_password, user_email)
+    RETURNING  UserID, Name, Role, UserName, Password, Email;
+END;
+$$;
