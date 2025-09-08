@@ -1,5 +1,6 @@
 CREATE TABLE IF NOT EXISTS "Users" (
     UserID SERIAL PRIMARY KEY,
+    CustomID VARCHAR(30) UNIQUE,
     Name VARCHAR(100) NOT NULL,
     UserName VARCHAR(50) UNIQUE NOT NULL,
     Password VARCHAR(255) NOT NULL,
@@ -14,23 +15,26 @@ CREATE OR REPLACE FUNCTION insert_user(
     user_username TEXT,
     user_password TEXT,
     user_email TEXT,
-    student_batch VARCHAR(20)
+    student_batch VARCHAR(20),
+    custom_id TEXT DEFAULT NULL
 )
 RETURNS TABLE(
     userid INT,
+    customid VARCHAR(30),
     name VARCHAR(100),
     role VARCHAR(25),
     username VARCHAR(50),
     password VARCHAR(255),
     email VARCHAR(255),
     batch VARCHAR(20)
-) 
+)
 LANGUAGE plpgsql
 AS $$
 BEGIN
     RETURN QUERY
-    INSERT INTO "Users" (Name, Role, UserName, Password, Email, Batch)
+    INSERT INTO "Users" (customid, name, role, username, password, email, batch)
     VALUES (
+        custom_id,
         user_name, 
         COALESCE(user_role, 'student'), 
         user_username, 
@@ -38,6 +42,6 @@ BEGIN
         user_email, 
         student_batch
     )
-    RETURNING UserID, Name, Role, UserName, Password, Email, Batch;
+    RETURNING "Users".userid, "Users".customid, "Users".name, "Users".role, "Users".username, "Users".password, "Users".email, "Users".batch;
 END;
 $$;
