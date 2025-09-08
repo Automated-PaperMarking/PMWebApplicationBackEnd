@@ -2,7 +2,7 @@ import express from 'express';
 import supabase from './supabaseClient.js';
 import uploadRoute from './routes/upload.route.js';
 import { errorHandler } from './middlewares/error.middleware.js';
-
+import usermanagementRoute from './routes/usermanagement.route.js';
 const app = express();
 
 app.use(express.json());
@@ -15,6 +15,7 @@ app.get('/', (req, res) => {
 
 // Routes
 app.use('/', uploadRoute);
+app.use('/users', usermanagementRoute);
 
 // Error middleware (must be last)
 app.use(errorHandler);

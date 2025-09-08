@@ -9,6 +9,7 @@ const userRepository = {
       //  salt round of 10, which is secure and commonly used
 
       const { data, error } = await supabase.rpc('insert_user', {
+        custom_id: userData.regNo,
         user_name: userData.name,
         user_role: userData.role,
         user_username: userData.username,
@@ -38,4 +39,4 @@ const userRepository = {
   }
 };
 
-export {studentRepository};
+export {userRepository};
