@@ -36,7 +36,23 @@ const userRepository = {
       console.error('Repository Error:', error);
       throw error;
     }
-  }
+  },
+
+  getUserByUsernameOrEmail: async (identifier) => {
+    try {
+      const { data, error } = await supabase
+        .from('Users')
+        .select('*')
+        .or(`username.eq.${identifier},email.eq.${identifier}`)
+        .single();
+
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error('Repository Error:', error);
+      throw error;
+    }
+  },
 };
 
 export {userRepository};
