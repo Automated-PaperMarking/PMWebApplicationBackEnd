@@ -25,6 +25,9 @@ const userController = {
   loginUser: async (req, res) => {
     try {
       const { identifier, password } = req.body; // expects { identifier (username or email), password }
+      if (!identifier || !password) {
+        return res.status(400).json({ error: "Both identifier and password are required." });
+      }
       const { user, token } = await userService.loginUser(identifier, password);
       res.status(200).json({ user, token });
     } catch (error) {
