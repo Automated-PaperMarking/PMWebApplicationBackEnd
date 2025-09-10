@@ -20,6 +20,16 @@ const userController = {
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
+  },
+
+  loginUser: async (req, res) => {
+    try {
+      const { identifier, password } = req.body; // expects { identifier (username or email), password }
+      const { user, token } = await userService.loginUser(identifier, password);
+      res.status(200).json({ user, token });
+    } catch (error) {
+      res.status(401).json({ error: error.message });
+    }
   }
 };
 
