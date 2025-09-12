@@ -15,7 +15,7 @@ CREATE OR REPLACE FUNCTION insert_user(
     user_username TEXT,
     user_password TEXT,
     user_email TEXT,
-    student_batch VARCHAR(20),
+    student_batch VARCHAR(20) DEFAULT NULL,
     custom_id TEXT DEFAULT NULL
 )
 RETURNS TABLE(
