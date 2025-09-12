@@ -1,0 +1,32 @@
+CREATE TABLE IF NOT EXISTS "Projects" (
+    ModuleID SERIAL PRIMARY KEY,
+    ModuleCode VARCHAR(100) NOT NULL,
+    ModuleName VARCHAR(100) NOT NULL,
+    UserID INT REFERENCES "Users"(UserID)
+);
+
+CREATE OR REPLACE FUNCTION insert_project(
+    module_code TEXT,
+    module_name TEXT,
+    user_id INT
+)
+
+RETURNS TABLE(
+    moduleid INT,
+    userid INT,
+    modulecode VARCHAR(30),
+    modulename VARCHAR(100)
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    RETURN QUERY
+    INSERT INTO "Projects" (userid, modulecode, modulename)
+    VALUES (
+        user_id,
+        module_code, 
+        module_name
+    )
+    RETURNING "Projects".moduleid, "Projects".userid, "Projects".modulecode, "Projects".modulename;
+END;
+$$;
