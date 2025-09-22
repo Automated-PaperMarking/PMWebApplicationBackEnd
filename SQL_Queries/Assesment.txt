@@ -1,0 +1,47 @@
+CREATE TABLE IF NOT EXISTS "Assessments" (
+    Ass_ID SERIAL PRIMARY KEY,
+    ModuleID INT REFERENCES "Projects"(ModuleID),
+    UserID INT REFERENCES "Users"(UserID),
+    Title VARCHAR(100) NOT NULL,
+    Type VARCHAR(100) NOT NULL,
+    Created_At TIMESTAMP NOT NULL,
+    Deadline TIMESTAMP,
+    AllocatedTime INTERVAL,
+    MaximumMarks INT,
+    Enrollment_Key VARCHAR(100) NOT NULL
+);
+CREATE OR REPLACE FUNCTION insert_assessment(
+    p_moduleid INT,
+    p_user_id INT,
+    p_title TEXT,
+    p_type TEXT,
+    p_created_at TIMESTAMP,
+    p_deadline TIMESTAMP,
+    p_allocatedtime INTERVAL,
+    p_maximummarks INT,
+    p_enrollment_key TEXT
+)
+RETURNS TABLE(
+    ass_id INT,
+    moduleid INT,
+    userid INT,
+    title VARCHAR,
+    type VARCHAR,
+    created_at TIMESTAMP,
+    deadline TIMESTAMP,
+    allocatedtime INTERVAL,
+    maximummarks INT,
+    enrollment_key VARCHAR
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    RETURN QUERY
+    INSERT INTO "Assessments" 
+        ("ModuleID", "UserID", "Title", "Type", "Created_At", "Deadline", "AllocatedTime", "MaximumMarks", "Enrollment_Key")
+    VALUES 
+        (p_moduleid, p_user_id, p_title, p_type, p_created_at, p_deadline, p_allocatedtime, p_maximummarks, p_enrollment_key)
+    RETURNING 
+        "Ass_ID", "ModuleID", "UserID", "Title", "Type", "Created_At", "Deadline", "AllocatedTime", "MaximumMarks", "Enrollment_Key";
+END;
+$$;
