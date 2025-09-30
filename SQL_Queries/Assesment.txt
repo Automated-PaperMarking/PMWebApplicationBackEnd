@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS "Assessments" (
     UserID INT REFERENCES "Users"(UserID),
     Title VARCHAR(100) NOT NULL,
     Type VARCHAR(100) NOT NULL,
-    Created_At TIMESTAMP NOT NULL,
+    Created_At TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     Deadline TIMESTAMP,
     AllocatedTime INTERVAL,
     MaximumMarks INT,
@@ -38,10 +38,10 @@ AS $$
 BEGIN
     RETURN QUERY
     INSERT INTO "Assessments" 
-        ("ModuleID", "UserID", "Title", "Type", "Created_At", "Deadline", "AllocatedTime", "MaximumMarks", "Enrollment_Key")
+        (moduleid, userid, title, type, created_at, deadline, allocatedtime, maximummarks, enrollment_key)
     VALUES 
         (p_moduleid, p_user_id, p_title, p_type, p_created_at, p_deadline, p_allocatedtime, p_maximummarks, p_enrollment_key)
     RETURNING 
-        "Ass_ID", "ModuleID", "UserID", "Title", "Type", "Created_At", "Deadline", "AllocatedTime", "MaximumMarks", "Enrollment_Key";
+        "Assessments".ass_id,"Assessments".moduleid,"Assessments".userid,"Assessments".title,"Assessments".type,"Assessments".created_at,"Assessments".deadline,"Assessments".allocatedtime,"Assessments".maximummarks,"Assessments".enrollment_key;
 END;
 $$;
