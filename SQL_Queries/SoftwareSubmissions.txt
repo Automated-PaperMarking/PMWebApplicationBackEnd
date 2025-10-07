@@ -1,0 +1,14 @@
+CREATE TABLE IF NOT EXISTS "SoftwareSubmissions" (
+    SubmissionID SERIAL PRIMARY KEY,
+    Ass_ID INT REFERENCES "Assessments"(Ass_ID) ON DELETE CASCADE,
+    UserID INT REFERENCES "Users"(UserID),
+    Code TEXT NOT NULL,
+    Problem TEXT NOT NULL,
+    Marking_Scheme JSONB,
+    Marks INT,
+    Feedback TEXT,
+    Status VARCHAR(20) DEFAULT 'pending',
+    IsLate BOOLEAN DEFAULT FALSE,
+    Created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Evaluated_At TIMESTAMP,
+);
